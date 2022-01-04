@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.test:runner:1.4.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f483841258dc9f1ff0cac9383931a419/runner-1.4.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/193bf1b00d017e7b1ad3e3f79043d3af/runner-1.4.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fc4bd63a365038a6801cf9ac43d8f553/runner-1.4.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fc4bd63a365038a6801cf9ac43d8f553/runner-1.4.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fc4bd63a365038a6801cf9ac43d8f553/runner-1.4.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test/runner/1.4.0/aee6a62a26d9b413dadc1732e66cc4ef3bcf9d61/runner-1.4.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test/runner/1.4.0/11ef580a9f2ea2fba4d060a3121506197bd6b183/runner-1.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
