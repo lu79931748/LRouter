@@ -1,9 +1,10 @@
-package com.example.lrouter;
+package com.lwf.lrouter;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lwf.lrouter.R;
 import com.lwf.router.annotations.Router;
 
 @Router(path = "router://page-home")

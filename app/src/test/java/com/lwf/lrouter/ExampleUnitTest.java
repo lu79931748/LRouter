@@ -1,4 +1,4 @@
-package com.example.lrouter;
+package com.lwf.lrouter;
 
 import org.junit.Test;
 

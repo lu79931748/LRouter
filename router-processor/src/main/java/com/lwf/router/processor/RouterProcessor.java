@@ -3,6 +3,7 @@ package com.lwf.router.processor;
 import com.google.auto.service.AutoService;
 import com.lwf.router.annotations.Router;
 
+import java.io.Writer;
 import java.util.Collections;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.tools.JavaFileObject;
 
 /**
  * Created by luwenfei on 2022/1/5
@@ -34,6 +36,17 @@ public class RouterProcessor extends AbstractProcessor {
         if(roundEnvironment.processingOver()){
             return false;
         }
+
+        String className = "RouterMapping_" + System.currentTimeMillis();
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("package com.lwf.lrouter.mapping;\n\n");
+        builder.append("import java.util.HashMap;\n");
+        builder.append("import java.util.Map;\n\n");
+        builder.append("public class ").append(className).append(" {\n\n");
+        builder.append("    public static Map<String, String> get() {\n\n");
+        builder.append("        Map<String, String> mapping = new HashMap<>();\n");
 
         System.out.println(TAG + " >>> process start...");
 
@@ -67,9 +80,37 @@ public class RouterProcessor extends AbstractProcessor {
             System.out.println(TAG + " >>> description = " + description);
             System.out.println(TAG + " >>> realPath = " + realPath);
 
-            System.out.println(TAG + " >>> process finish.");
+            builder.append("        ")
+                    .append("mapping.put(")
+                    .append("\"").append(path).append("\"")
+                    .append(", ")
+                    .append("\"").append(realPath).append("\"")
+                    .append(");\n");
 
         }
+
+        builder.append("        return mapping;\n");
+        builder.append("    }\n");
+        builder.append("}\n");
+
+        String mappingFullClassName = "com.lwf.lrouter.mapping." + className;
+
+        System.out.println(TAG + " >>> mappingFullClassName = " + mappingFullClassName);
+        System.out.println(TAG + " >>> class content = \n" + builder);
+
+        //写入生成类到本地文件中
+        try {
+            JavaFileObject source = processingEnv.getFiler()
+                    .createSourceFile(mappingFullClassName);
+            Writer writer = source.openWriter();
+            writer.write(builder.toString());
+            writer.flush();
+            writer.close();
+        } catch (Exception exception){
+            throw new RuntimeException(exception);
+        }
+
+        System.out.println(TAG + " >>> process finish.");
 
         return false;
     }
