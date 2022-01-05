@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lwf.router.annotations.Router;
 
+@Router(path = "router://page-home")
 public class MainActivity extends AppCompatActivity {
 
     @Override
