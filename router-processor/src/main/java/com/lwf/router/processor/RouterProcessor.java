@@ -1,11 +1,13 @@
 package com.lwf.router.processor;
 
+import com.google.auto.service.AutoService;
 import com.lwf.router.annotations.Router;
 
 import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -14,6 +16,7 @@ import javax.lang.model.element.TypeElement;
  * Created by luwenfei on 2022/1/5
  * 路由注解处理器
  */
+@AutoService(Processor.class)
 public class RouterProcessor extends AbstractProcessor {
 
     private static final String TAG = "RouterProcessor";
@@ -26,6 +29,11 @@ public class RouterProcessor extends AbstractProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+
+        //避免多次调用process
+        if(roundEnvironment.processingOver()){
+            return false;
+        }
 
         System.out.println(TAG + " >>> process start...");
 
