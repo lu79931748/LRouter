@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'com.lwf.router'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 router {
@@ -28,6 +30,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kapt {
+        arguments {
+            arg("root_project_dir", rootProject.projectDir.absolutePath)
+        }
+    }
 }
 
 dependencies {
@@ -39,5 +46,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation project(':router-annotations')
-    annotationProcessor project(':router-processor')
+    kapt project(':router-processor')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.20"
 }

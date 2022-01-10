@@ -37,6 +37,10 @@ public class RouterProcessor extends AbstractProcessor {
             return false;
         }
 
+        String rootDir = processingEnv.getOptions().get("root_project_dir");
+
+        System.out.println(TAG + "rootDir= " + rootDir);
+
         String className = "RouterMapping_" + System.currentTimeMillis();
 
         StringBuilder builder = new StringBuilder();
