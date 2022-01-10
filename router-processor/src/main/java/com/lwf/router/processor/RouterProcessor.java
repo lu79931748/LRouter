@@ -1,8 +1,13 @@
 package com.lwf.router.processor;
 
 import com.google.auto.service.AutoService;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.lwf.router.annotations.Router;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.Set;
@@ -37,6 +42,19 @@ public class RouterProcessor extends AbstractProcessor {
             return false;
         }
 
+        //获取所有标记了 @Router 注解的类的信息
+        Set<Element> allRouterElements = (Set<Element>) roundEnvironment.getElementsAnnotatedWith(Router.class);
+
+        System.out.println(TAG + " >>> all Destination elements count = "
+                + allRouterElements.size());
+
+        //当未收集到 @Router 注解的时候，跳过后续流程
+        if(allRouterElements.size() < 1){
+            return false;
+        }
+
+        System.out.println(TAG + " >>> process start...");
+
         String rootDir = processingEnv.getOptions().get("root_project_dir");
 
         System.out.println(TAG + "rootDir= " + rootDir);
@@ -52,18 +70,7 @@ public class RouterProcessor extends AbstractProcessor {
         builder.append("    public static Map<String, String> get() {\n\n");
         builder.append("        Map<String, String> mapping = new HashMap<>();\n");
 
-        System.out.println(TAG + " >>> process start...");
-
-        //获取所有标记了 @Router 注解的类的信息
-        Set<Element> allRouterElements = (Set<Element>) roundEnvironment.getElementsAnnotatedWith(Router.class);
-
-        System.out.println(TAG + " >>> all Destination elements count = "
-                + allRouterElements.size());
-
-        //当未收集到 @Router 注解的时候，跳过后续流程
-        if(allRouterElements.size() < 1){
-            return false;
-        }
+        final JsonArray pathJsonArray = new JsonArray();
 
         //遍历所有 @Router 注解信息
         for(Element element : allRouterElements){
@@ -91,6 +98,12 @@ public class RouterProcessor extends AbstractProcessor {
                     .append("\"").append(realPath).append("\"")
                     .append(");\n");
 
+            JsonObject object = new JsonObject();
+            object.addProperty("path", path);
+            object.addProperty("description", description);
+            object.addProperty("realPath", realPath);
+
+            pathJsonArray.add(object);
         }
 
         builder.append("        return mapping;\n");
@@ -112,6 +125,33 @@ public class RouterProcessor extends AbstractProcessor {
             writer.close();
         } catch (Exception exception){
             throw new RuntimeException(exception);
+        }
+
+        //写入JSON到本地文件中
+
+        //检测父目录是否存在
+        File rootDirFile = new File(rootDir);
+        if(!rootDirFile.exists()){
+            throw new RuntimeException("root_project_dir is not exist!");
+        }
+
+        //创建 router_mapping 子目录
+        File routerFileDir = new File(rootDirFile, "router_mapping");
+        if(!routerFileDir.exists()){
+            routerFileDir.mkdir();
+        }
+
+        File mappingFile = new File(routerFileDir, "mapping_" + System.currentTimeMillis() + ".json");
+
+        //写入json内容
+        try{
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(mappingFile));
+            String jsonStr = pathJsonArray.toString();
+            bufferedWriter.write(jsonStr);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        }catch (Throwable throwable){
+            throw new RuntimeException("Error while writing json", throwable);
         }
 
         System.out.println(TAG + " >>> process finish.");

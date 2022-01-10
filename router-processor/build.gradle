@@ -8,6 +8,7 @@ dependencies {
     implementation 'com.google.auto.service:auto-service:1.0-rc6'
     //gradle5+版本及以上添加annotationProcessor声明
     annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 java {
