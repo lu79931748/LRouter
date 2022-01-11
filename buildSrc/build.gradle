@@ -6,12 +6,14 @@ apply plugin: 'maven'
 //声明仓库的地址
 repositories {
     mavenCentral()
+    google()
 }
 
 //声明依赖包
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation 'com.android.tools.build:gradle:3.5.4'
 }
 
 uploadArchives {
