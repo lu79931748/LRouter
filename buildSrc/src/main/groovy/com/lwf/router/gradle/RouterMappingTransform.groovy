@@ -61,6 +61,7 @@ class RouterMappingTransform extends Transform {
         //2、对Input进行二次处理
         //3、将Input拷贝到目标目录
 
+        RouterMappingCollector collector = new RouterMappingCollector()
         //遍历所有的输入
         transformInvocation.inputs.each {transformInput ->
             //处理文件夹类型
@@ -71,6 +72,7 @@ class RouterMappingTransform extends Transform {
                                 directoryInput.scopes,
                                 Format.DIRECTORY
                         )
+                collector.collect(directoryInput.file)
                 //3、将Input拷贝到目标目录
                 FileUtils.copyDirectory(directoryInput.file, destDir)
             }
@@ -83,8 +85,11 @@ class RouterMappingTransform extends Transform {
                                 jarInput.scopes,
                                 Format.JAR
                         )
+                collector.collectFromJarFile(jarInput.file)
                 FileUtils.copyFile(jarInput.file, dest)
             }
         }
+        println("${getName()} all mapping class name = "
+                + collector.mappingClassName)
     }
 }
