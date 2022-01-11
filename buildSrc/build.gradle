@@ -5,8 +5,8 @@ apply plugin: 'maven'
 
 //声明仓库的地址
 repositories {
-    mavenCentral()
     google()
+    mavenCentral()
 }
 
 //声明依赖包

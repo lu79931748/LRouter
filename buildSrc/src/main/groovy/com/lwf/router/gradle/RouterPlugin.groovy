@@ -35,6 +35,11 @@ class RouterPlugin implements Plugin<Project> {
             }
         }
 
+        //只在主工程中生成
+        if(!project.plugins.hasPlugin(AppPlugin)){
+            return
+        }
+
         println("I am from RouterPlugin, apply from ${project.name}")
 
         project.getExtensions().create("router", RouterExtension)

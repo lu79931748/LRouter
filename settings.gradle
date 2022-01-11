@@ -1,5 +1,5 @@
 rootProject.name = "LRouter"
-include ':app'
+include ':app',':reading'
 include ':router-gradle-plugin'
 include ':router-annotations'
 include ':router-processor'
